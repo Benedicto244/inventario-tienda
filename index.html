@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
 <meta charset="UTF-8">
-<title>Tienda con Inventario en Tiempo Real</title>
-
-<script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
+<title>Tienda con Inventario Automático</title>
 
 <style>
 
 body{
-font-family:Arial;
-background:#f2f2f2;
+font-family: Arial;
+background:#f4f4f4;
 text-align:center;
 }
 
 h1{
-background:#1e2a38;
+background:#2c3e50;
 color:white;
 padding:15px;
 }
@@ -24,32 +21,22 @@ padding:15px;
 table{
 margin:auto;
 border-collapse:collapse;
-width:90%;
+width:70%;
 background:white;
 }
 
 th,td{
 padding:10px;
-border:1px solid #ddd;
+border:1px solid #ccc;
 }
 
 th{
-background:#2f80ed;
+background:#3498db;
 color:white;
 }
 
-.disponible{
-color:green;
+.stock{
 font-weight:bold;
-}
-
-.agotado{
-color:red;
-font-weight:bold;
-}
-
-#qr{
-margin-top:30px;
 }
 
 </style>
@@ -58,32 +45,27 @@ margin-top:30px;
 
 <body>
 
-<h1>INVENTARIO DE PRODUCTOS</h1>
+<h1>MI TIENDA</h1>
 
 <table id="tabla">
-
 <thead>
 <tr>
 <th>ID</th>
 <th>Producto</th>
-<th>Categoría</th>
 <th>Precio</th>
-<th>Stock</th>
-<th>Estado</th>
+<th>Disponibles</th>
 </tr>
 </thead>
 
-<tbody></tbody>
+<tbody>
+
+</tbody>
 
 </table>
 
-<h2>Escanea el QR para ver el inventario</h2>
-
-<canvas id="qr"></canvas>
-
 <script>
 
-const url="https://docs.google.com/spreadsheets/d/1L0RpzzisnTOz0cg7QWHavTmOji6MxxZf_3IwspAxbLo/edit?gid=0#gid=0";
+const url="https://docs.google.com/spreadsheets/d/103ApUTXHOqW2nCnLOrBZULdxUTyt_yrAn1opcxuSuIE/gviz/tq?tqx=out:csv";
 
 fetch(url)
 .then(res=>res.text())
@@ -96,31 +78,21 @@ filas.slice(1).forEach(fila=>{
 
 const columnas=fila.split(",");
 
-let estado=columnas[6];
-
-let clase=estado=="Disponible"?"disponible":"agotado";
-
 let tr=document.createElement("tr");
 
 tr.innerHTML=`
+
 <td>${columnas[0]}</td>
 <td>${columnas[1]}</td>
-<td>${columnas[2]}</td>
-<td>$${columnas[3]}</td>
-<td>${columnas[4]}</td>
-<td class="${clase}">${estado}</td>
+<td>$${columnas[2]}</td>
+<td class="stock">${columnas[3]}</td>
+
 `;
 
 tabla.appendChild(tr);
 
 });
 
-});
-
-let qr = new QRious({
-element: document.getElementById('qr'),
-value: window.location.href,
-size: 220
 });
 
 </script>
